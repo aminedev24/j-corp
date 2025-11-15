@@ -4,6 +4,7 @@ import SectionGrid, { SectionConfig } from "./components/SectionGrid";
 import ServiceHighlights from "./components/ServiceHighlights";
 import ContactCTA from "./components/ContactCTA";
 import PortfolioShowcase, { RepoHighlight } from "./components/PortfolioShowcase";
+import CaligymnicBlog from "./components/CaligymnicBlog";
 import Footer from "./components/Footer";
 import type { AppRoute, AppView } from "./types/navigation";
 
@@ -12,14 +13,16 @@ const routeToHash: Record<AppRoute, string> = {
   focus: "ventures",
   portfolio: "portfolio",
   services: "services",
-  contact: "contact"
+  contact: "contact",
+  blog: "blog"
 };
 
 const hashToRoute: Record<string, AppView> = {
   ventures: "focus",
   portfolio: "portfolio",
   services: "services",
-  contact: "contact"
+  contact: "contact",
+  blog: "blog"
 };
 
 const resolveRouteFromHash = (): AppRoute => {
@@ -264,8 +267,39 @@ const App = () => {
     } else {
       window.location.hash = "";
     }
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setRoute(nextRoute);
   }, []);
+
+  const caligymnicPosts = useMemo(
+    () => [
+      {
+        title: "My First Blog Post",
+        excerpt:
+          "Be yourself; everyone else is already taken. Calisthenics keeps you agile anywhere, anytime. The goal isn’t beating others—it’s beating yesterday’s version of you.",
+        url: "https://caligymnic.sport.blog/2019/07/26/example-post/",
+        tag: "Training Notes",
+        imageUrl: "https://caligymnic.sport.blog/wp-content/uploads/2019/07/c97cd2f2-a9a4-483f-b2ba-1cca4322a1fa.png"
+      },
+      {
+        title: "How Can You Combine Both?",
+        excerpt:
+          "Calisthenics alone makes some muscles tough to target, so layer in staples like chin-ups. It’s about blending bodyweight mastery with selective resistance work.",
+        url: "https://caligymnic.sport.blog/2019/08/08/how-can-you-combine-both/",
+        tag: "Hybrid Programs",
+        imageUrl: "https://caligymnic.sport.blog/wp-content/uploads/2019/08/maxresdefault.jpg"
+      },
+      {
+        title: "The Benefits of Doing Both",
+        excerpt:
+          "Bodyweight work teaches control and core engagement, while weights add resistance to build more muscle. Run both and your progress multiplies.",
+        url: "https://caligymnic.sport.blog/2019/07/31/the-benefits-of-doing-both/",
+        tag: "Performance Science",
+        imageUrl: "https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=1000&q=80"
+      }
+    ],
+    []
+  );
 
   const viewSections = useMemo<
     Record<
@@ -275,6 +309,7 @@ const App = () => {
         title: string;
         description: string;
         element: JSX.Element;
+        heroImage: string;
       }
     >
   >(
@@ -284,31 +319,48 @@ const App = () => {
         title: "Venture Labs Deep Dive",
         description:
           "Unpack four parallel labs spanning digital products, Arduino builds, CaliGymnic performance, and sustainable food experiences.",
-        element: <SectionGrid sections={focusAreas} />
+        element: <SectionGrid sections={focusAreas} />,
+        heroImage:
+          "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1000&q=80"
       },
       portfolio: {
         eyebrow: "Prototype Library",
         title: "Prototypes, Proofs & Live Repos",
         description:
           "Browse working code, hosted demos, and explorations that show how Johnny Corp experiments before scaling.",
-        element: <PortfolioShowcase repositories={repoHighlights} />
+        element: <PortfolioShowcase repositories={repoHighlights} />,
+        heroImage:
+          "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1000&q=80"
       },
       services: {
         eyebrow: "Operations Crew",
         title: "Hands-On Service Programs",
         description:
           "Electrical, fabrication, product UX, and automotive teams are on call to keep operations alive between ventures.",
-        element: <ServiceHighlights services={serviceAddOns} />
+        element: <ServiceHighlights services={serviceAddOns} />,
+        heroImage:
+          "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1000&q=80"
       },
       contact: {
         eyebrow: "Partner With J-Corp",
         title: "Collaborate With Johnny Corp",
         description:
           "Investors, technologists, athletes, and culinary partners can open a direct conversation with the core team.",
-        element: <ContactCTA />
+        element: <ContactCTA />,
+        heroImage:
+          "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=80"
+      },
+      blog: {
+        eyebrow: "CaliGymnic Dispatch",
+        title: "CaliGymnic Blog Highlights",
+        description:
+          "Dive deeper into calisthenics culture, training science, and hybrid routines curated by the CaliGymnic collective.",
+        element: <CaligymnicBlog posts={caligymnicPosts} />,
+        heroImage:
+          "https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=1000&q=80"
       }
     }),
-    [focusAreas, repoHighlights, serviceAddOns]
+    [focusAreas, repoHighlights, serviceAddOns, caligymnicPosts]
   );
 
   const teaserCards = useMemo(
@@ -336,6 +388,14 @@ const App = () => {
         summary: "Certified crews covering UX, fabrication, electrical systems, and automotive care.",
         placeholderIcon: "⚡",
         ctaLabel: "View Services"
+      },
+      {
+        route: "blog" as const,
+        eyebrow: "CaliGymnic",
+        title: "Training Dispatch",
+        summary: "Latest calisthenics training notes, hybrid programs, and recovery rituals.",
+        imageUrl: caligymnicPosts[0]?.imageUrl,
+        ctaLabel: "Read Dispatch"
       },
       {
         route: "contact" as const,
@@ -394,13 +454,26 @@ const App = () => {
     return (
       <>
         <section className="space-y-4 border-b border-white/10 bg-[radial-gradient(120%_120%_at_50%_0%,#1b1f32_0%,#06070c_60%,#020205_100%)] px-6 py-12 sm:px-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-j-mint/70">{config.eyebrow}</p>
-          <h1 className="text-3xl font-semibold sm:text-4xl">{config.title}</h1>
-          <p className="max-w-3xl text-slate-200/80">{config.description}</p>
-          <div className="flex flex-wrap gap-3">
-            <button type="button" className="btn btn-secondary" onClick={() => handleNavigate("home")}>
-              Back to Overview
-            </button>
+          <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:items-center">
+            <div className="space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-j-mint/70">{config.eyebrow}</p>
+              <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">{config.title}</h1>
+              <p className="max-w-3xl text-slate-200/80 sm:text-lg">{config.description}</p>
+              <div className="flex flex-wrap gap-3">
+                <button type="button" className="btn btn-secondary" onClick={() => handleNavigate("home")}>
+                  Back to Overview
+                </button>
+              </div>
+            </div>
+            <div className="relative mx-auto w-full max-w-md overflow-hidden rounded-3xl border border-white/10 shadow-card-dark">
+              <img
+                className="h-full w-full object-cover"
+                src={config.heroImage}
+                alt={`${config.title} visual`}
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" aria-hidden="true" />
+            </div>
           </div>
         </section>
         <div>{config.element}</div>

@@ -1,0 +1,11 @@
+       {
+          /* Duplicate image for visual effect
+          
+          <img
+          className="relative z-10 h-full w-full rounded-2xl object-cover"
+          src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=80"
+          alt="Founder portrait representing Johnny Corp"
+          loading="lazy"
+        />
+          */
+        }

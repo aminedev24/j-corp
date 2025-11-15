@@ -86,8 +86,8 @@ const ServiceHighlights = ({ services }: ServiceHighlightsProps) => {
 
   return (
     <section className="space-y-4 bg-slate-950 px-6 py-12 text-center sm:px-10 lg:py-16">
-      <h2 className="text-3xl font-semibold">Hands-On Support When You Need It</h2>
-      <p className="mx-auto max-w-2xl text-slate-200/80">
+      <h2 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">Hands-On Support When You Need It</h2>
+      <p className="mx-auto max-w-3xl text-base text-slate-200/80 sm:text-lg lg:text-xl">
         Beyond the spotlight sectors, J-Corp keeps operations moving with skilled teams for essential services.
       </p>
       <div className="mt-10 grid gap-8 mx-auto max-w-5xl">
@@ -128,23 +128,39 @@ const ServiceHighlights = ({ services }: ServiceHighlightsProps) => {
                 textRefs.current[index] = el;
               }}
               data-index={index}
-              className={`space-y-2 px-1 py-4 transition duration-500 ease-out ${
+              className={`space-y-4 px-1 py-5 transition duration-500 ease-out ${
                 visibleTexts[index] ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
               }`}
               style={{ transitionDelay: `${index * 100 + 200}ms` }}
             >
-              <h3 className="text-2xl font-semibold">{service.label}</h3>
-              <p className="text-sm text-slate-200/75">{service.detail}</p>
+              <div className="flex flex-wrap gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-j-mint/80">
+                <span>{service.icon} Ops Program</span>
+                <span className="text-white/70">Global Support</span>
+              </div>
+              <h3 className="bg-gradient-to-r from-white via-j-mint to-white bg-clip-text text-3xl font-semibold text-transparent sm:text-4xl lg:text-5xl">
+                {service.label}
+              </h3>
+              <p className="text-base text-slate-200/80 sm:text-lg lg:text-xl">
+                <span className="font-semibold text-j-mint">Why it matters:</span> {service.detail}
+              </p>
               {service.capabilities?.length ? (
-                <ul className="mt-3 space-y-1.5 text-sm text-slate-200/65">
-                  {service.capabilities.map((capability) => (
-                    <li key={capability} className="flex items-start gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-j-mint" aria-hidden="true" />
-                      <span>{capability}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="rounded-2xl border border-white/5 bg-white/5 p-4">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-j-mint/70">
+                    Core capabilities
+                  </p>
+                  <ul className="space-y-2 text-sm text-slate-200/80 sm:text-base">
+                    {service.capabilities.map((capability) => (
+                      <li key={capability} className="flex items-start gap-2">
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-j-mint" aria-hidden="true" />
+                        <span>{capability}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ) : null}
+              <p className="text-xs uppercase tracking-[0.35em] text-slate-400">
+                Avg turnaround 72h · Remote + on-site coverage
+              </p>
             </div>
           </div>
         ))}
